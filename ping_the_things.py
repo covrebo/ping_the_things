@@ -1,5 +1,11 @@
 import os
 
+# TODO implement file i/o into list of namedtuples or dictionary?
+# TODO implement support for Windows
+# TODO improve reporting
+# TODO email report
+# TODO automate running the script
+
 hosts = ['192.168.1.1', 'google.com']
 report = []
 
