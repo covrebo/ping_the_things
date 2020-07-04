@@ -1,0 +1,7 @@
+Host,Hostname
+google.com,The Google
+www.apple.com,The fruit company
+cnn.co.jp,CNN Japan
+192.168.1.1,Gateway
+255.255.255.254,Near the end of the network
+255.255.255.255,The end of the network
