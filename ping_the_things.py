@@ -1,6 +1,8 @@
 import os
 import csv
 
+# TODO write functions
+# TODO write tests
 # TODO implement support for Windows
 # TODO improve reporting
 # TODO email report
