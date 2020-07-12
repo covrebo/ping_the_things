@@ -1,5 +1,6 @@
 import os
 import csv
+import sys
 
 # TODO write functions
 # TODO write tests
@@ -12,7 +13,7 @@ import csv
 # response_wait_time = input('How to to wait for ping response ( in milliseconds, recommend 250): ')
 
 # comment out if prompting user for wait time
-response_wait_time = 250
+response_wait_time = 1000
 
 # a list of things to ping
 hosts = []
@@ -30,9 +31,16 @@ with open('things.csv', 'r') as things_to_ping:
         except ValueError:
             continue
 
+platform = sys.platform
+
 for host in hosts:
-    # ping each host with one packet and wait up to 250 milliseconds for a response
-    response = os.system(f'ping -W {response_wait_time} -c 1 {host[0]}')
+    # check for operating system
+    if sys.platform == 'win32':
+        # ping each host with one packet and wait up to 250 milliseconds for a response
+        response = os.system(f'ping -w {response_wait_time} -n 1 {host[0]}')
+    else:
+        # ping each host with one packet and wait up to 250 milliseconds for a response
+        response = os.system(f'ping -W {response_wait_time} -c 1 {host[0]}')
 
     if response == 0:
         report.append([f'{host[0]} which is *{host[1]}* is UP!', 1])
