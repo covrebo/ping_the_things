@@ -1,7 +1,5 @@
-import os
-import csv
+from services import csv_services, ping_services, report_services
 
-# TODO write functions
 # TODO write tests
 # TODO implement support for Windows
 # TODO improve reporting
@@ -14,45 +12,11 @@ import csv
 # comment out if prompting user for wait time
 response_wait_time = 250
 
-# a list of things to ping
-hosts = []
+# import a list of hosts from a csv
+hosts = csv_services.import_hosts_from_csv()
 
 # list of what is up and what is down
-report = []
+report = ping_services.ping_the_hosts(hosts, response_wait_time)
 
-# open a local csv file to read in a list of hosts to check
-with open('things.csv', 'r') as things_to_ping:
-    # create the list of hosts
-    for line in csv.DictReader(things_to_ping):
-        try:
-            # add a tuple for each host and hostname to the list of hosts
-            hosts.append((line['Host'], line['Hostname']))
-        except ValueError:
-            continue
-
-for host in hosts:
-    # ping each host with one packet and wait up to 250 milliseconds for a response
-    response = os.system(f'ping -W {response_wait_time} -c 1 {host[0]}')
-
-    if response == 0:
-        report.append([f'{host[0]} which is *{host[1]}* is UP!', 1])
-    else:
-        report.append([f'{host[0]} which is *{host[1]}* is DOWN!', 0])
-
-# print the hosts that are down
-print('-' * 80)
-
-print('| These hosts are down:')
-for result in report:
-    if result[1] == 0:
-        print(f'|\t {result[0]}')
-
-# print the hosts that are up
-print('-' * 80)
-
-print('| These hosts are up:')
-for result in report:
-    if result[1] == 1:
-        print(f'|\t {result[0]}')
-
-print('-' * 80)
+# print the results
+report_services.print_results(report)
