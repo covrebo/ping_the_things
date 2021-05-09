@@ -2,7 +2,7 @@ import argparse
 
 from services import csv_services, ping_services, report_services, \
     host_services
-from models import host_models, db_base
+from models import host_models, modelbase
 
 # TODO write tests
 # TODO implement support for Windows
@@ -11,13 +11,11 @@ from models import host_models, db_base
 # TODO automate running the script
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--import", help="import hosts from a csv template to the db")
+parser.add_argument("--load_from_csv", help="import hosts from a csv template to the db", action="store_true")
+parser.add_argument("--setup", help="setup the db on first run")
 args = parser.parse_args()
 print(f'args={args}')
 # print(args.echo)
-
-# create the db
-db_base.create_db()
 
 # get response wait time from user (optional)
 # response_wait_time = input('How to to wait for ping response ( in milliseconds, recommend 250): ')
@@ -25,7 +23,7 @@ db_base.create_db()
 # comment out if prompting user for wait time
 response_wait_time = 250
 
-if "import" in args:
+if args.load_from_csv:
     # import a list of hosts from a csv
     hosts_to_import = csv_services.import_hosts_from_csv()
 

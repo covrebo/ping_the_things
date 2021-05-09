@@ -1,7 +1,7 @@
 import datetime
 
 from sqlalchemy import Column, Integer, String
-from models.db_base import Base
+from models.modelbase import Base
 
 
 class Host(Base):

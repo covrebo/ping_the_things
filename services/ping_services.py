@@ -1,7 +1,7 @@
 import os
 
 from typing import List
-from models.db_base import session
+from models.modelbase import session_factory
 from models.host_models import Host
 
 # list of what is up and what is down
@@ -21,6 +21,8 @@ def ping_the_hosts(host_list: List, response_wait_time: int) -> List:
 
 
 def get_host_list() -> List:
+    session = session_factory()
+
     # get a list of all the hosts in the db
     hosts = session.query(Host).all()
 
@@ -30,6 +32,6 @@ def get_host_list() -> List:
         host_list.append((host.host, host.host_name))
 
     # clear the db session
-    session.flush()
+    session.close()
 
     return host_list
