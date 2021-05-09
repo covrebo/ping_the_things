@@ -1,9 +1,11 @@
-from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String
-from sqlalchemy.orm import declarative_base
+from sqlalchemy import create_engine
+from sqlalchemy.orm import declarative_base, Session
 
 engine = create_engine("sqlite+pysqlite:///db/app.db", echo=True, future=True)
 
 Base = declarative_base()
+
+session = Session(engine)
 
 def create_db():
 
