@@ -1,5 +1,8 @@
 import os
+
 from typing import List
+from models.db_base import session
+from models.host_models import Host
 
 # list of what is up and what is down
 report = []
@@ -15,3 +18,18 @@ def ping_the_hosts(host_list: List, response_wait_time: int) -> List:
             report.append([f'{host[0]} which is *{host[1]}* is DOWN!', 0])
 
     return report
+
+
+def get_host_list() -> List:
+    # get a list of all the hosts in the db
+    hosts = session.query(Host).all()
+
+    # create a list of hosts to ping
+    host_list = []
+    for host in hosts:
+        host_list.append((host.host, host.host_name))
+
+    # clear the db session
+    session.flush()
+
+    return host_list
