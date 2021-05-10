@@ -9,10 +9,12 @@ from models import host_models, modelbase
 # TODO improve reporting
 # TODO email report
 # TODO automate running the script
+# TODO create users in database to receive emails
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--load_from_csv", help="import hosts from a csv template to the db", action="store_true")
 parser.add_argument("--setup", help="setup the db on first run")
+parser.add_argument("--response_wait_time", help="How to to wait for ping response in milliseconds (recommend 250)")
 args = parser.parse_args()
 print(f'args={args}')
 # print(args.echo)
@@ -21,7 +23,13 @@ print(f'args={args}')
 # response_wait_time = input('How to to wait for ping response ( in milliseconds, recommend 250): ')
 
 # comment out if prompting user for wait time
-response_wait_time = 250
+if args.response_wait_time:
+    response_wait_time = args.response_wait_time
+else:
+    response_wait_time = 250
+
+# if args.setup:
+    # TODO: create db folder if not present
 
 if args.load_from_csv:
     # import a list of hosts from a csv

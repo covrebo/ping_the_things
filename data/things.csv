@@ -5,3 +5,6 @@ cnn.co.jp,CNN Japan
 192.168.1.1,Gateway
 255.255.255.254,Near the end of the network
 255.255.255.255,The end of the network
+10.0.0.1, /8 Network Gateway
+172.16.0.1, /12 Network Gateway
+192.168.0.1, /16 Network Gateway

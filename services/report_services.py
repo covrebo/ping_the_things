@@ -1,3 +1,6 @@
+from typing import List
+
+
 def print_results(report):
     # print the hosts that are down
     print('-' * 80)
