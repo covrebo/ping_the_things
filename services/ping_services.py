@@ -1,6 +1,6 @@
 import os
 
-from typing import List
+from typing import List, Tuple
 from models.modelbase import session_factory
 from models.host_models import Host
 from models.pinglog_models import PingLog
@@ -10,7 +10,7 @@ report = []
 results = []
 
 
-def ping_the_hosts(host_list: List, response_wait_time: int) -> List:
+def ping_the_hosts(host_list: List, response_wait_time: int) -> Tuple[List, int]:
     for host in host_list:
         # ping each host with one packet and wait up to 250 milliseconds for a response
         response = os.system(f'ping -W {response_wait_time} -c 1 {host[0]}')
@@ -28,7 +28,7 @@ def ping_the_hosts(host_list: List, response_wait_time: int) -> List:
     # get previous batch number
     batch_num = get_batch_num()
     # increment batch number
-    batch_num = batch_num[0] + 1
+    batch_num = batch_num + 1
 
     for result in results:
         if result[2] == 0:
@@ -41,7 +41,7 @@ def ping_the_hosts(host_list: List, response_wait_time: int) -> List:
     session.commit()
     session.close()
 
-    return report
+    return report, batch_num
 
 
 def get_host_list() -> List:
@@ -64,8 +64,14 @@ def get_host_list() -> List:
 def get_batch_num() -> int:
     session = session_factory()
 
-    # get a list of all the hosts in the db
-    batch_num = session.query(PingLog.batch).order_by(
-        PingLog.id.desc()).first()
+    # check if there are any existing batches
+    if session.query(PingLog).all():
+        # get a list of all the hosts in the db
+        batch_num = session.query(PingLog.batch).order_by(
+            PingLog.id.desc()).first()
+        batch_num = batch_num.batch
+        session.close()
+    else:
+        batch_num = 0
 
     return batch_num

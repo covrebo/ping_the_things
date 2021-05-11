@@ -8,14 +8,6 @@ Base = declarative_base()
 
 session = Session(engine)
 
-def session_factory():
+def session_factory() -> Session:
     Base.metadata.create_all(engine)
     return _SessionFactory()
-
-# def create_db():
-#
-#     from models.host_models import Host
-#
-#     Base.metadata.create_all(engine)
-#
-#     return None

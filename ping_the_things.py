@@ -19,10 +19,7 @@ args = parser.parse_args()
 print(f'args={args}')
 # print(args.echo)
 
-# get response wait time from user (optional)
-# response_wait_time = input('How to to wait for ping response ( in milliseconds, recommend 250): ')
-
-# comment out if prompting user for wait time
+# set response time for ping command
 if args.response_wait_time:
     response_wait_time = args.response_wait_time
 else:
@@ -41,7 +38,7 @@ if args.load_from_csv:
 hosts = ping_services.get_host_list()
 
 # list of what is up and what is down
-report = ping_services.ping_the_hosts(hosts, response_wait_time)
+report, batch = ping_services.ping_the_hosts(hosts, response_wait_time)
 
 # print the results
-report_services.print_results(report)
+report_services.print_results(report, batch)
