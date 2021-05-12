@@ -2,7 +2,9 @@ from typing import List
 from models.modelbase import session_factory
 from models.host_models import Host
 
+
 def write_hosts_to_db(host_list: List):
+
     session = session_factory()
 
     for host in host_list:
@@ -14,3 +16,12 @@ def write_hosts_to_db(host_list: List):
     session.close()
 
     return None
+
+
+# get a list of all hosts in the db
+def get_all_hosts() -> List[Host]:
+    session = session_factory()
+    hosts = session.query(Host).all()
+    session.close()
+
+    return hosts

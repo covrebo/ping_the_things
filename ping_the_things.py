@@ -6,7 +6,6 @@ from models import host_models, modelbase
 
 # TODO write tests
 # TODO implement support for Windows
-# TODO improve reporting
 # TODO email report
 # TODO automate running the script
 # TODO create users in database to receive emails
@@ -27,6 +26,7 @@ else:
 
 # if args.setup:
     # TODO: create db folder if not present
+    # TODO: create workflow to add email recipients
 
 if args.load_from_csv:
     # import a list of hosts from a csv
