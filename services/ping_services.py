@@ -1,4 +1,5 @@
 import os
+import platform
 
 from typing import List, Tuple
 from models.modelbase import session_factory
@@ -13,7 +14,11 @@ results = []
 def ping_the_hosts(host_list: List, response_wait_time: int) -> Tuple[List, int]:
     for host in host_list:
         # ping each host with one packet and wait up to 250 milliseconds for a response
-        response = os.system(f'ping -W {response_wait_time} -c 1 {host[0]}')
+        print(platform.system())
+        if platform.system() == 'Windows':
+            response = os.system(f'ping -W {response_wait_time} -n 1 {host[0]}')
+        else:
+            response = os.system(f'ping -W {response_wait_time} -c 1 {host[0]}')
 
         if response == 0:
             report.append([f'{host[0]} which is *{host[1]}* is UP!', 1])

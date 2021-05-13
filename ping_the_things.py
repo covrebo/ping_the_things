@@ -5,7 +5,6 @@ from services import csv_services, ping_services, report_services, \
 from models import host_models, modelbase
 
 # TODO write tests
-# TODO implement support for Windows
 # TODO email report
 # TODO automate running the script
 # TODO historic reports
