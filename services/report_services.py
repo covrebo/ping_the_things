@@ -29,34 +29,35 @@ def print_results(report: List, batch: int):
     print('-' * 80)
     print('| These hosts have changed to up:')
     if not changes["now_up"]:
-        print(f"| No hosts have changed to up")
+        print(f"|\t No hosts have changed to up")
     else:
         for item in changes["now_up"]:
-            print(f"| Host: {item[0]} which is {item[1]} is now UP!")
+            print(f"|\t Host: {item[0]} which is {item[1]} is now UP!")
     print('-' * 80)
     print('| These hosts have changed to down:')
     if not changes["now_down"]:
-        print(f"| No hosts have changed to down")
+        print(f"|\t No hosts have changed to down")
     else:
         for item in changes["now_down"]:
-            print(f"| Host: {item[0]} which is {item[1]} is now DOWN!")
+            print(f"|\t Host: {item[0]} which is {item[1]} is now DOWN!")
     print('-' * 80)
     print('| These hosts have not changed:')
     if not changes["no_change"]:
-        print(f"| All hosts have changed status")
+        print(f"|\t All hosts have changed status")
     else:
         for item in changes["no_change"]:
-            print(f"| Host: {item[0]} which is {item[1]} has not changed!")
+            print(f"|\t Host: {item[0]} which is {item[1]} has not changed!")
     print('-' * 80)
     print('| These hosts are new:')
     if not changes["new_host"]:
-        print(f"| There are no new hosts")
+        print(f"|\t There are no new hosts")
     else:
         for item in changes["new_host"]:
-            print(f"| Host: {item[0]} which is {item[1]} is new!")
+            print(f"|\t Host: {item[0]} which is {item[1]} is new!")
     print('-' * 80)
 
     return None
+
 
 def compare_ping_results(batch: int) -> Dict:
     batch_prev = batch - 1
@@ -77,8 +78,6 @@ def compare_ping_results(batch: int) -> Dict:
         else:
             dict_prev["down"].append((row.host, row.host_name))
 
-    print(dict_prev)
-
     # get the results of the current batch and store them in a dictionary
     results_cur = session.query(PingLog).filter_by(batch=batch).all()
 
@@ -92,8 +91,6 @@ def compare_ping_results(batch: int) -> Dict:
             dict_cur["up"].append((row.host, row.host_name))
         else:
             dict_cur["down"].append((row.host, row.host_name))
-
-    print(dict_cur)
 
     # create a dict of changes
     changes_dict = {

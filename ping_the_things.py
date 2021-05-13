@@ -8,7 +8,14 @@ from models import host_models, modelbase
 # TODO implement support for Windows
 # TODO email report
 # TODO automate running the script
-# TODO create users in database to receive emails
+# TODO manage hosts
+# TODO historic reports
+# TODO create alert levels/report format
+# TODO add logging
+
+##################
+###  ARGPARSE  ###
+##################
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--load_from_csv",
@@ -19,8 +26,18 @@ parser.add_argument("--response_wait_time",
                     help="How to to wait for ping response in milliseconds (default is 250)")
 parser.add_argument("--add_user", nargs=3,
                     help="3 parameters <first name> <last name> <email> to add an email recipient to the db")
+parser.add_argument("--manage_users",
+                    help="view a list of email recipients, add new users, or remove users",
+                    action="store_true")
+# TODO: add argument to only report changes
+# TODO: add argument to manage hosts
+# TODO: add argument to minimize the app to run without any dependencies
 args = parser.parse_args()
 print(f'args={args}')
+
+# if args.setup:
+# TODO: create db folder if not present
+
 
 # set response time for ping command
 if args.response_wait_time:
@@ -28,10 +45,7 @@ if args.response_wait_time:
 else:
     response_wait_time = 250
 
-# if args.setup:
-# TODO: create db folder if not present
-# TODO: create workflow to add email recipients
-
+# import hosts from a csv template
 if args.load_from_csv:
     # import a list of hosts from a csv
     hosts_to_import = csv_services.import_hosts_from_csv()
@@ -42,6 +56,14 @@ if args.load_from_csv:
 # add new user to the email list db table
 if args.add_user:
     user_service.add_user(args.add_user)
+
+# manage users
+if args.manage_users:
+    user_service.manage_users()
+
+########################
+###  PING THE HOSTS  ###
+########################
 
 # retrieve a list of hosts to ping from the db
 hosts = ping_services.get_host_list()
