@@ -17,10 +17,12 @@ def manage_users():
         if task.lower() == 'l':
             user_list = list_users()
             if user_list:
+                print('-' * 5)
                 for row in user_list:
-                    print(f'ID:\t{row.id}')
-                    print(f'Name:\t{row.f_name} {row.l_name}')
-                    print(f'Email:\t{row.email}\n')
+                    print(f'| ID: {row.id}')
+                    print(f'| Name: {row.f_name} {row.l_name}')
+                    print(f'| Email: {row.email}')
+                    print('-' * 5)
         if task.lower() == 'a':
             new_user = []
             new_user.append(input(f'User first name: '))
@@ -33,10 +35,12 @@ def manage_users():
             if id.lower() == 'l':
                 user_list = list_users()
                 if user_list:
+                    print('-' * 5)
                     for row in user_list:
-                        print(f'ID:\t{row.id}')
-                        print(f'Name:\t{row.f_name} {row.l_name}')
-                        print(f'Email:\t{row.email}\n')
+                        print(f'| ID: {row.id}')
+                        print(f'| Name: {row.f_name} {row.l_name}')
+                        print(f'| Email: {row.email}')
+                        print('-' * 5)
             else:
                 try:
                     id = int(id)

@@ -1,14 +1,13 @@
 import argparse
 
 from services import csv_services, ping_services, report_services, \
-    host_services, user_service
+    host_services, user_services
 from models import host_models, modelbase
 
 # TODO write tests
 # TODO implement support for Windows
 # TODO email report
 # TODO automate running the script
-# TODO manage hosts
 # TODO historic reports
 # TODO create alert levels/report format
 # TODO add logging
@@ -29,15 +28,16 @@ parser.add_argument("--add_user", nargs=3,
 parser.add_argument("--manage_users",
                     help="view a list of email recipients, add new users, or remove users",
                     action="store_true")
+parser.add_argument("--manage_hosts",
+                    help="view a list of hosts, add new hosts, or remove hosts",
+                    action="store_true")
 # TODO: add argument to only report changes
-# TODO: add argument to manage hosts
 # TODO: add argument to minimize the app to run without any dependencies
 args = parser.parse_args()
 print(f'args={args}')
 
 # if args.setup:
 # TODO: create db folder if not present
-
 
 # set response time for ping command
 if args.response_wait_time:
@@ -55,11 +55,15 @@ if args.load_from_csv:
 
 # add new user to the email list db table
 if args.add_user:
-    user_service.add_user(args.add_user)
+    user_services.add_user(args.add_user)
 
 # manage users
 if args.manage_users:
-    user_service.manage_users()
+    user_services.manage_users()
+
+# manage hosts
+if args.manage_hosts:
+    host_services.manage_hosts()
 
 ########################
 ###  PING THE HOSTS  ###
