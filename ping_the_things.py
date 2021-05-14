@@ -1,7 +1,8 @@
 import argparse
+import sys
 
 from services import csv_services, ping_services, report_services, \
-    host_services, user_services
+    host_services, user_services, setup_services
 from models import host_models, modelbase
 
 # TODO write tests
@@ -19,7 +20,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--load_from_csv",
                     help="import hosts from a csv template to the db",
                     action="store_true")
-parser.add_argument("--setup", help="setup the db on first run")
+parser.add_argument("--setup", help="setup the db on first run", action="store_true")
 parser.add_argument("--response_wait_time",
                     help="How to to wait for ping response in milliseconds (default is 250)")
 parser.add_argument("--add_user", nargs=3,
@@ -33,10 +34,10 @@ parser.add_argument("--manage_hosts",
 # TODO: add argument to only report changes
 # TODO: add argument to minimize the app to run without any dependencies
 args = parser.parse_args()
-print(f'args={args}')
 
-# if args.setup:
-# TODO: create db folder if not present
+if args.setup:
+    setup_services.check_for_db_directory()
+    sys.exit("Setup complete.")
 
 # set response time for ping command
 if args.response_wait_time:
@@ -55,6 +56,7 @@ if args.load_from_csv:
 # add new user to the email list db table
 if args.add_user:
     user_services.add_user(args.add_user)
+    sys.exit('New user created')
 
 # manage users
 if args.manage_users:

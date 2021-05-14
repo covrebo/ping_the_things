@@ -1,6 +1,5 @@
 import sys
 from typing import List, Optional
-
 from models.modelbase import session_factory
 from models.user_models import User
 
@@ -14,7 +13,7 @@ def manage_users():
         task = input(f'How do you want to manage users? [L]ist users, [A]dd user, [R]emove user, or [Q]uit: ')
         if task.lower() == 'q':
             sys.exit("Goodbye")
-        if task.lower() == 'l':
+        elif task.lower() == 'l':
             user_list = list_users()
             if user_list:
                 print('-' * 5)
@@ -23,13 +22,15 @@ def manage_users():
                     print(f'| Name: {row.f_name} {row.l_name}')
                     print(f'| Email: {row.email}')
                     print('-' * 5)
-        if task.lower() == 'a':
+            else:
+                print('There are no users in the db.')
+        elif task.lower() == 'a':
             new_user = []
             new_user.append(input(f'User first name: '))
             new_user.append(input(f'User last name: '))
             new_user.append(input(f'User email: '))
             add_user(new_user)
-        if task.lower() == 'r':
+        elif task.lower() == 'r':
             id = input(f'Enter ID of user to remove or [L]ist current users: ')
 
             if id.lower() == 'l':
@@ -69,7 +70,7 @@ def add_user(user: List) -> bool:
     session.commit()
     session.close()
 
-    sys.exit(f"New user {user[0]} {user[1]} created.")
+    return True
 
 # remove a user from db by id
 def remove_user(id: int):
