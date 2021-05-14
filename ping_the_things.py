@@ -2,7 +2,7 @@ import argparse
 import sys
 
 from services import csv_services, ping_services, report_services, \
-    host_services, user_services, setup_services
+    host_services, user_services, setup_services, email_services
 from models import host_models, modelbase
 
 # TODO write tests
@@ -78,3 +78,6 @@ report, batch = ping_services.ping_the_hosts(hosts, response_wait_time)
 
 # print the results
 report_services.print_results(report, batch)
+
+# email results
+email_services.email_report(report, batch)
