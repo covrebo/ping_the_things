@@ -1,6 +1,8 @@
 import smtplib, ssl, os
 from typing import List, Dict
 
+from services import user_services
+
 
 def email_report(report: List, changes: Dict, batch: int):
     # get the hosts that are down and convert to format the message can use
@@ -42,13 +44,16 @@ def email_report(report: List, changes: Dict, batch: int):
     if not no_change_hosts:
         no_change_hosts = "\tNo changes."
 
+    # get the list of email receivers from the db users table
+    all_users = user_services.list_users()
+
     port = os.getenv("EMAIL_PORT")  # For starttls
     smtp_server = os.getenv("SMTP_SERVER")
     sender_email = os.getenv("SENDING_EMAIL")
-    receiver_email = "@gmail.com"
     password = os.getenv("EMAIL_PW")
     if not password:
         password = input("Type your password and press enter:")
+
     message = """Subject: Network Report No. {batch}\n
     
     ###  THESE HOSTS ARE DOWN  ###
@@ -81,16 +86,17 @@ def email_report(report: List, changes: Dict, batch: int):
         server.starttls(context=context)
         server.ehlo()  # Can be omitted
         server.login(sender_email, password)
-        server.sendmail(
-            sender_email,
-            receiver_email,
-            message.format(
-                batch=batch,
-                down_hosts=down_hosts,
-                up_hosts=up_hosts,
-                now_up_hosts=now_up_hosts,
-                now_down_hosts=now_down_hosts,
-                new_hosts=new_hosts,
-                no_change_hosts=no_change_hosts))
+        for user in all_users:
+            server.sendmail(
+                sender_email,
+                user.email,
+                message.format(
+                    batch=batch,
+                    down_hosts=down_hosts,
+                    up_hosts=up_hosts,
+                    now_up_hosts=now_up_hosts,
+                    now_down_hosts=now_down_hosts,
+                    new_hosts=new_hosts,
+                    no_change_hosts=no_change_hosts))
 
     return None
