@@ -1,6 +1,7 @@
 import argparse
 import sys
 
+from dotenv import load_dotenv
 from services import csv_services, ping_services, report_services, \
     host_services, user_services, setup_services, email_services
 from models import host_models, modelbase
@@ -11,6 +12,14 @@ from models import host_models, modelbase
 # TODO historic reports
 # TODO create alert levels/report format
 # TODO add logging
+
+####################################
+###  LOAD ENVIRONMENT VARIABLES  ###
+####################################
+'''
+Envirnoment variable are needed to safely enable the email capabilities. Copy the 'template.env' file and rename it '.env' in the root directory. Place your variables in the file and remember to exlude the '.env' file from version control.
+'''
+load_dotenv()
 
 ##################
 ###  ARGPARSE  ###

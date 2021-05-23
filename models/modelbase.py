@@ -1,7 +1,13 @@
+import os
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker, Session
 
-engine = create_engine("sqlite+pysqlite:///db/app.db", future=True)
+db_conn = os.getenv("DATABASE_URI")
+if not db_conn:
+    db_conn = "sqlite+pysqlite:///db/app.db"
+
+engine = create_engine(db_conn, future=True)
 _SessionFactory = sessionmaker(bind=engine)
 
 Base = declarative_base()
