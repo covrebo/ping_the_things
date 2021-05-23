@@ -29,7 +29,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--load_from_csv",
                     help="import hosts from a csv template to the db",
                     action="store_true")
-parser.add_argument("--setup", help="setup the db on first run", action="store_true")
+parser.add_argument("--setup", help="setup the db on first run",
+                    action="store_true")
 parser.add_argument("--response_wait_time",
                     help="How to to wait for ping response in milliseconds (default is 250)")
 parser.add_argument("--add_user", nargs=3,
@@ -86,7 +87,7 @@ hosts = ping_services.get_host_list()
 report, batch = ping_services.ping_the_hosts(hosts, response_wait_time)
 
 # print the results
-report_services.print_results(report, batch)
+changes = report_services.print_results(report, batch)
 
 # email results
-email_services.email_report(report, batch)
+email_services.email_report(report, changes, batch)

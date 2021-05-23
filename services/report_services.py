@@ -4,7 +4,7 @@ from models.modelbase import session_factory
 from models.pinglog_models import PingLog
 
 
-def print_results(report: List, batch: int):
+def print_results(report: List, batch: int) -> Dict:
     # print the hosts that are down
     print('-' * 80)
 
@@ -56,7 +56,7 @@ def print_results(report: List, batch: int):
             print(f"|\t Host: {item[0]} which is {item[1]} is new!")
     print('-' * 80)
 
-    return None
+    return changes
 
 
 def compare_ping_results(batch: int) -> Dict:
